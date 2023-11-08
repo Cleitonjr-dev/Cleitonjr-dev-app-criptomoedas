@@ -9,7 +9,6 @@ class MoedasPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tabela = MoedaRepository.tabela;
-
     return Scaffold(
       drawer: const Drawer(
         clipBehavior: Clip.antiAliasWithSaveLayer,

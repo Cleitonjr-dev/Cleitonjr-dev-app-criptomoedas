@@ -136,11 +136,15 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const MoedasPage()),
-                            );
+                            if (controller.username.text == 'admin' &&
+                                controller.password.text == '123') {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const MoedasPage(),
+                                ),
+                              );
+                            } else {}
                           },
                         ),
                       ),

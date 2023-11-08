@@ -12,8 +12,8 @@ class LoginController with ChangeNotifier {
   bool showLoginForm = true;
 
   LoginController() {
-    username.text = "";
-    password.text = "";
+    username.text = "admin";
+    password.text = "123";
   }
 
   @override
