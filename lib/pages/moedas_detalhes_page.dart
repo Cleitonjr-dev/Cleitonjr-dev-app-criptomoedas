@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, avoid_unnecessary_containers
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -17,6 +17,7 @@ class _MoedasDetalhesPageState extends State<MoedasDetalhesPage> {
   NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
   final _form = GlobalKey<FormState>();
   final _valor = TextEditingController();
+  double quantidade = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +57,28 @@ class _MoedasDetalhesPageState extends State<MoedasDetalhesPage> {
                 ],
               ),
             ),
+            (quantidade > 0)
+                ? SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      margin: const EdgeInsets.only(bottom: 24),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.teal.withOpacity(0.05),
+                      ),
+                      child: Text(
+                        '$quantidade ${widget.moeda.sigla}',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.teal,
+                        ),
+                      ),
+                    ),
+                  )
+                : Container(
+                    margin: const EdgeInsets.only(bottom: 24),
+                  ),
             Form(
               key: _form,
               child: TextFormField(
@@ -80,11 +103,61 @@ class _MoedasDetalhesPageState extends State<MoedasDetalhesPage> {
                   }
                   return null;
                 },
+                onChanged: (value) {
+                  setState(() {
+                    quantidade = (value.isEmpty)
+                        ? 0
+                        : double.parse(value) / widget.moeda.preco;
+                  });
+                },
+              ),
+            ),
+            Container(
+              alignment: Alignment.bottomCenter,
+              margin: const EdgeInsets.only(top: 24),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.indigo,
+                ),
+                onPressed: comprar,
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.check),
+                    Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Text(
+                        'Comprar',
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  comprar() {
+    if (_form.currentState!.validate()) {
+      // Salvar a compra
+
+      Navigator.pop(context);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Compra realizada com sucesso!!'),
+        ),
+      );
+    }
   }
 }
