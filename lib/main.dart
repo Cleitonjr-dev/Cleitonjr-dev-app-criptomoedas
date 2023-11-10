@@ -2,37 +2,44 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'controller/login_controller.dart';
 import 'pages/login_page.dart';
+import 'repositories/favorita_repository.dart'; // Import the FavoritaRepository
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<LoginController>(create: (context) => LoginController()),
+        ChangeNotifierProvider<FavoritasRepository>(create: (context) => FavoritasRepository()),
+        // Add other providers as needed
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key); // Fix the constructor
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => LoginController(),
-      child: Consumer<LoginController>(
-        builder: (context, controller, child) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Cripto Moedas',
-            theme: ThemeData(
-              primarySwatch: Colors.indigo,
-              useMaterial3: true,
-              iconButtonTheme: const IconButtonThemeData(
-                style: ButtonStyle(
-                  iconColor: MaterialStatePropertyAll(Colors.white),
-                ),
+    return Consumer<LoginController>(
+      builder: (context, controller, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Cripto Moedas',
+          theme: ThemeData(
+            primarySwatch: Colors.indigo,
+            useMaterial3: true,
+            iconButtonTheme: IconButtonThemeData(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all(Colors.white), // Fix the icon color
               ),
-              iconTheme: const IconThemeData(color: Colors.white),
             ),
-            home: LoginPage(controller: controller),
-          );
-        },
-      ),
+            iconTheme: const IconThemeData(color: Colors.white),
+          ),
+          home: LoginPage(controller: controller),
+        );
+      },
     );
   }
 }

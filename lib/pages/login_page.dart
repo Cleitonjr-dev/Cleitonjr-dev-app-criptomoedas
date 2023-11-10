@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../controller/login_controller.dart';
+import 'home_page.dart';
 import 'login_registrar_page.dart';
-import 'moedas_page.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key, required this.controller}) : super(key: key);
@@ -141,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => MoedasPage(),
+                                  builder: (context) => HomePage(),
                                 ),
                               );
                             } else {}
